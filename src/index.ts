@@ -35,7 +35,7 @@ export interface Failure<E> {
 /**
  * @category model
  */
-export type RemoteData<E, A> = NotAsked | Loading | Success<A> | Failure<E>
+export type RemoteData<E, A> = NotAsked | Loading | Success<A> | Failure<E>;
 
 // -------------------------------------------------------------------------------------
 // guards
@@ -45,26 +45,29 @@ export type RemoteData<E, A> = NotAsked | Loading | Success<A> | Failure<E>
  * Returns `true` if the remoteData is an instance of `NotAsked`, `false` otherwise
  * @category guards
  */
-export const isNotAsked = <E, A>(ma: RemoteData<E, A>): ma is NotAsked => ma._tag === 'NotAsked'
+export const isNotAsked = <E, A>(ma: RemoteData<E, A>): ma is NotAsked =>
+  ma._tag === 'NotAsked';
 
 /**
  * Returns `true` if the remoteData is an instance of `Loading`, `false` otherwise
  * @category guards
  */
-export const isLoading = <E, A>(ma: RemoteData<E, A>): ma is Loading => ma._tag === 'Loading'
+export const isLoading = <E, A>(ma: RemoteData<E, A>): ma is Loading =>
+  ma._tag === 'Loading';
 
 /**
  * Returns `true` if the remoteData is an instance of `NotAsked`, `false` otherwise
  * @category guards
  */
-export const isSuccess = <E, A>(ma: RemoteData<E, A>): ma is Success<A> => ma._tag === 'Success'
+export const isSuccess = <E, A>(ma: RemoteData<E, A>): ma is Success<A> =>
+  ma._tag === 'Success';
 
 /**
  * Returns `true` if the remoteData is an instance of `NotAsked`, `false` otherwise
  * @category guards
  */
-export const isFailure = <E, A>(ma: RemoteData<E, A>): ma is Failure<E> => ma._tag === 'Failure'
-
+export const isFailure = <E, A>(ma: RemoteData<E, A>): ma is Failure<E> =>
+  ma._tag === 'Failure';
 
 // -------------------------------------------------------------------------------------
 // constructors
@@ -73,32 +76,36 @@ export const isFailure = <E, A>(ma: RemoteData<E, A>): ma is Failure<E> => ma._t
 /**
  * @category constructors
  */
-export const notAsked: RemoteData<never, never> = { _tag: 'NotAsked' }
+export const notAsked: RemoteData<never, never> = { _tag: 'NotAsked' };
 
 /**
  * @category constructors
  */
-export const loading: RemoteData<never, never> = { _tag: 'Loading' }
+export const loading: RemoteData<never, never> = { _tag: 'Loading' };
 
 /**
  * @category constructors
  */
-export const success = <A>(a: A): RemoteData<never, A> => ({ _tag: 'Success', data: a })
+export const success = <A>(a: A): RemoteData<never, A> => ({
+  _tag: 'Success',
+  data: a,
+});
 
 /**
  * @category constructors
  */
-export const failure = <E>(e: E): RemoteData<E, never> => ({ _tag: 'Failure', error: e })
-
+export const failure = <E>(e: E): RemoteData<E, never> => ({
+  _tag: 'Failure',
+  error: e,
+});
 
 // -------------------------------------------------------------------------------------
 // destructors
 // -------------------------------------------------------------------------------------
 
-
-
 // -------------------------------------------------------------------------------------
 // pipeables
 // -------------------------------------------------------------------------------------
 
-export const map = <A, B>(f: (a: A) => B) => (fa: RemoteData<never, A>) => isSuccess(fa) ? success(f(fa.data)) : fa
+export const map = <A, B>(f: (a: A) => B) => (fa: RemoteData<never, A>) =>
+  isSuccess(fa) ? success(f(fa.data)) : fa;
