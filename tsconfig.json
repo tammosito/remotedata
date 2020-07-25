@@ -19,5 +19,9 @@
     },
     "jsx": "react",
     "esModuleInterop": true
-  }
+  },
+  "typedocOptions": {
+    "mode": "modules",
+    "out": "docs"
+}
 }
