@@ -110,5 +110,6 @@ export const failure = <E>(e: E): RemoteData<E, never> => ({
 export const map = <A, B>(f: (a: A) => B) => (fa: RemoteData<never, A>) =>
   isSuccess(fa) ? success(f(fa.data)) : fa;
 
-export const mapFailure = <E, A>(f: (a: E) => A) => (fe: RemoteData<E, never>) =>
-  isFailure(fe) ? failure(f(fe.error)) : fe;
+export const mapFailure = <E, A>(f: (a: E) => A) => (
+  fe: RemoteData<E, never>
+) => (isFailure(fe) ? failure(f(fe.error)) : fe);

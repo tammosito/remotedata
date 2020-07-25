@@ -1,4 +1,11 @@
-import { isNotAsked, notAsked, success, failure, map, mapFailure } from '../src';
+import {
+  isNotAsked,
+  notAsked,
+  success,
+  failure,
+  map,
+  mapFailure,
+} from '../src';
 
 describe('RemoteData', () => {
   it('Should be the same', () => {
@@ -12,8 +19,10 @@ describe('RemoteData', () => {
   });
 
   it('Should map error on failure', () => {
-    const nextErr = mapFailure((error: string): string => error + "!");
+    const nextErr = mapFailure((error: string): string => error + '!');
 
-    expect(nextErr(failure("Something went wrong"))).toEqual(failure("Something went wrong!"));
+    expect(nextErr(failure('Something went wrong'))).toEqual(
+      failure('Something went wrong!')
+    );
   });
 });
