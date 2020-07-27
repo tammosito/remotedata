@@ -107,9 +107,31 @@ export const failure = <E>(e: E): RemoteData<E, never> => ({
 // pipeables
 // -------------------------------------------------------------------------------------
 
+/**
+ * A specialized `map` for `RemoteData`
+ */
 export const map = <A, B>(f: (a: A) => B) => (fa: RemoteData<never, A>) =>
   isSuccess(fa) ? success(f(fa.data)) : fa;
 
 export const mapFailure = <E, A>(f: (a: E) => A) => (
   fe: RemoteData<E, never>
 ) => (isFailure(fe) ? failure(f(fe.error)) : fe);
+
+// TODO: use HKT
+export const fold = <E, A, R extends unknown>(
+  onNotAsked: () => R,
+  onLoading: () => R,
+  onSuccess: (a: A) => R,
+  onFailure: (e: E) => R
+) => (a: RemoteData<E, A>) => {
+  switch (a._tag) {
+    case 'NotAsked':
+      return onNotAsked();
+    case 'Loading':
+      return onLoading();
+    case 'Success':
+      return onSuccess(a.data);
+    case 'Failure':
+      return onFailure(a.error);
+  }
+};

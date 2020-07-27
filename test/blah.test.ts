@@ -5,6 +5,8 @@ import {
   failure,
   map,
   mapFailure,
+  fold,
+  loading,
 } from '../src';
 
 describe('RemoteData', () => {
@@ -24,5 +26,57 @@ describe('RemoteData', () => {
     expect(nextErr(failure('Something went wrong'))).toEqual(
       failure('Something went wrong!')
     );
+  });
+
+  it('Should fold `notAsked`', () => {
+    const remoteData = notAsked;
+
+    expect(
+      fold(
+        () => 'notAsked',
+        () => 'loading',
+        _ => 'we have data',
+        _ => 'we got an error'
+      )(remoteData)
+    ).toEqual('notAsked');
+  });
+
+  it('Should fold `loading`', () => {
+    const remoteData = loading;
+
+    expect(
+      fold(
+        () => 'notAsked',
+        () => 'loading',
+        _ => 'we have data',
+        _ => 'we got an error'
+      )(remoteData)
+    ).toEqual('loading');
+  });
+
+  it('Should fold `success`', () => {
+    const remoteData = success('We got some data!');
+
+    expect(
+      fold(
+        () => 'notAsked',
+        () => 'loading',
+        (data: string) => data,
+        _ => 'we got an error'
+      )(remoteData)
+    ).toEqual('We got some data!');
+  });
+
+  it('Should fold `failure`', () => {
+    const remoteData = failure('An error occurred');
+
+    expect(
+      fold(
+        () => 'notAsked',
+        () => 'loading',
+        _ => 'we have data',
+        (error: string) => error
+      )(remoteData)
+    ).toEqual('An error occurred');
   });
 });
