@@ -7,7 +7,9 @@ import {
   mapFailure,
   fold,
   loading,
+  chain,
 } from '../src';
+import { pipe } from 'fp-ts/pipeable';
 
 describe('RemoteData', () => {
   it('Should be the same', () => {
@@ -78,5 +80,33 @@ describe('RemoteData', () => {
         (error: string) => error
       )(remoteData)
     ).toEqual('An error occurred');
+  });
+
+  it('Should chain', () => {
+    type User = { userId: number };
+    const userSuccess = success({ userId: 1 });
+    const getProfile = (_userId: User['userId']) =>
+      success({ name: 'John Doe' });
+
+    const combine = pipe(
+      userSuccess,
+      chain(user =>
+        pipe(
+          user.userId,
+          getProfile,
+          map(profile => ({ ...user, ...profile }))
+        )
+      )
+    );
+
+    expect(combine).toMatchInlineSnapshot(`
+      Object {
+        "_tag": "Success",
+        "data": Object {
+          "name": "John Doe",
+          "userId": 1,
+        },
+      }
+    `);
   });
 });

@@ -117,7 +117,10 @@ export const mapFailure = <E, A>(f: (a: E) => A) => (
   fe: RemoteData<E, never>
 ) => (isFailure(fe) ? failure(f(fe.error)) : fe);
 
-// TODO: use HKT
+export const chain = <A, B>(f: (a: A) => RemoteData<never, B>) => (
+  fa: RemoteData<never, A>
+) => (isSuccess(fa) ? f(fa.data) : fa);
+
 export const fold = <E, A, R extends unknown>(
   onNotAsked: () => R,
   onLoading: () => R,
